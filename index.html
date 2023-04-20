@@ -10,6 +10,31 @@
             width: 50%;
             height: 500px;
         }
+
+        .botao {
+            display: inline-block;
+            padding: 15px 30px;
+            /* Ajuste o valor de padding para aumentar o tamanho */
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 25px;
+            /* Valor de raio de borda ajustável */
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            /* Ajuste o valor de font-size para aumentar o tamanho */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            /* Transição suave de cor de fundo */
+            width: 200px;
+            /* Ajuste o valor de width para alterar a largura do botão */
+        }
+
+        /* Efeito de hover (sobreposição) no botão */
+        .botao:hover {
+            background-color: #008fb3;
+            /* Nova cor de fundo no hover */
+        }
     </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,22 +45,48 @@
 <body onload="inicializer()">
     <div style="text-align: center;">
         <h1>Formataús</h1>
-        <textarea placeholder="Digite seu texto aqui" id="texto"></textarea><br>
-        <button onclick="turnUpperCase()">Maiúsculo</button>
-        <button onclick="turnLowerCase()">Minúsculo</button>
+        <textarea placeholder="Digite seu texto aqui, Caso possua cifra, remover primeiro!" id="texto"></textarea><br>
+        <button class="botao" onclick="turnUpperCase()">Maiúsculo</button>
+        <button class="botao" onclick="turnLowerCase()">Minúsculo</button>
+        <button class="botao" onclick="removerAcordes()">Remove Cifra</button>
     </div>
     <script>
         let text
-        function inicializer(){
+        function inicializer() {
             text = document.getElementById("texto")
         }
-        function turnUpperCase(){
-            
+        function turnUpperCase() {
+
             text.value = text.value.toUpperCase()
         }
-        function turnLowerCase(){
+        function turnLowerCase() {
             text.value = text.value.toLowerCase()
         }
+        function removeAcordes() {
+            text.value = removerCifras(text.value)
+        }
+
+        function removerAcordes() {
+            const textoOriginal = text.value;
+            const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus)?\d?(\/\w+)?\b/g;
+            const linhas = textoOriginal.split(/\r?\n/g);
+            let textoSemAcordes = '';
+            const acordesExcluir = ['Em', 'Am', 'Bm', 'Bm7', 'C', 'D', 'G', 'F', 'A', 'E', 'C7', 'D7']; // Adicione aqui todos os acordes que deseja excluir
+            for (let i = 0; i < linhas.length; i++) {
+                const linha = linhas[i];
+                if (linha.trim() === '' || acordesExcluir.some(acorde => linha.includes(acorde))) {
+                    continue;
+                }
+                const linhaSemAcordes = linha.replace(regexAcordes, '').replace(/[+#°]/g, '').trim();
+                if (linhaSemAcordes.trim() !== '') {
+                    textoSemAcordes += linhaSemAcordes + '\n';
+                }
+            }
+            text.value = textoSemAcordes.trim();
+        }
+
+
+
     </script>
 
 </body>
