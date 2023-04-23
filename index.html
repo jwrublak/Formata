@@ -26,7 +26,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             /* Transição suave de cor de fundo */
-            width: 200px;
+            width: 10%;
             /* Ajuste o valor de width para alterar a largura do botão */
         }
 
@@ -43,21 +43,28 @@
 </head>
 
 <body onload="inicializer()">
+
     <div style="text-align: center;">
-        <h1>Formataús</h1>
+        <div style="position: relative;">
+            <h1 style="position: relative;">
+                Formataús
+            </h1>
+            <a href="javascript:void(0)" onclick="copiar()" style="text-decoration: none;">
+                Clique para copiar
+            </a>
+        </div>
         <textarea placeholder="Digite seu texto aqui, Caso possua cifra, remover primeiro!" id="texto"></textarea><br>
         <button class="botao" onclick="turnUpperCase()">Maiúsculo</button>
         <button class="botao" onclick="turnLowerCase()">Minúsculo</button>
-        <button id="btnCifra" class="botao" onclick="removerAcordes()">Remove Cifra</button>
+        <button class="botao" onclick="removerAcordes()">Remove Cifra</button>
     </div>
+
+
+
     <script>
         let text
-        let btnCifra
-        let comCifra = true
-        let textoOriginal
         function inicializer() {
             text = document.getElementById("texto")
-            btnCifra = document.getElementById("btnCifra")
         }
         function turnUpperCase() {
 
@@ -71,33 +78,33 @@
         }
 
         function removerAcordes() {
-            if (comCifra) {
-                textoOriginal = text.value;
-                const textoParaAlterar = textoOriginal
-                const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus|°|m)?\d?(\/\w+)?\b/g;
-                const linhas = textoParaAlterar.split(/\r?\n/g);
-                let textoSemAcordes = '';
-                const acordesExcluir = ['Em', 'Am', 'Bm', 'Bm7', 'C7', 'D7', 'G7', 'F7', 'A7', 'E7', 'C7', 'D7','D#º'];
-                for (let i = 0; i < linhas.length; i++) {
-                    const linha = linhas[i];
-                    if (linha.trim() === '' || acordesExcluir.some(acorde => linha.includes(acorde))) {
-                        continue;
-                    }
-                    const linhaSemAcordes = linha.replace(regexAcordes, '').replace(/[+#°]/g, '').trim();
-                    if (linhaSemAcordes.trim() !== '') {
-                        textoSemAcordes += linhaSemAcordes + '\n';
-                    }
+            const textoOriginal = text.value;
+            const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus)?\d?(\/\w+)?\b/g;
+            const linhas = textoOriginal.split(/\r?\n/g);
+            let textoSemAcordes = '';
+            const acordesExcluir = ['Em', 'Am', 'Bm', 'Bm7', 'C', 'D', 'G', 'F', 'A', 'E', 'C7', 'D7']; // Adicione aqui todos os acordes que deseja excluir
+            for (let i = 0; i < linhas.length; i++) {
+                const linha = linhas[i];
+                if (linha.trim() === '' || acordesExcluir.some(acorde => linha.includes(acorde))) {
+                    continue;
                 }
-                text.value = textoSemAcordes.trim();
-                comCifra = false;
-                btnCifra.innerHTML = "Texto Original"
+                const linhaSemAcordes = linha.replace(regexAcordes, '').replace(/[+#°]/g, '').trim();
+                if (linhaSemAcordes.trim() !== '') {
+                    textoSemAcordes += linhaSemAcordes + '\n';
+                }
             }
-            else{
-                text.value = textoOriginal
-                comCifra = true
-                btnCifra.innerHTML = "Remover Cifra"
-            }
+            text.value = textoSemAcordes.trim();
         }
+
+        function copiar() {
+            text.select();
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            alert("Conteúdo copiado para a área de transferência!");
+        }
+
     </script>
+
 </body>
+
 </html>
