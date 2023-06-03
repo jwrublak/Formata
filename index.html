@@ -73,24 +73,18 @@
         function turnLowerCase() {
             text.value = text.value.toLowerCase()
         }
-        function removeAcordes() {
-            text.value = removerCifras(text.value)
-        }
-
         function removerAcordes() {
             const textoOriginal = text.value;
             const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus)?\d?(\/\w+)?\b/g;
             const linhas = textoOriginal.split(/\r?\n/g);
             let textoSemAcordes = '';
-            const acordesExcluir = ['Em', 'Am', 'Bm', 'Bm7', 'C', 'D', 'G', 'F', 'A', 'E', 'C7', 'D7']; // Adicione aqui todos os acordes que deseja excluir
+            const acordesExcluir = ['Em', 'Am', 'Bm', 'Bm7', 'C7', 'D7', 'D11', 'G/F', 'C9', 'Cm7', 'A7', 'B7', 'G7', 'E7','[Refrão]', '[refrão]'];
             for (let i = 0; i < linhas.length; i++) {
                 const linha = linhas[i];
-                if (linha.trim() === '' || acordesExcluir.some(acorde => linha.includes(acorde))) {
-                    continue;
-                }
-                const linhaSemAcordes = linha.replace(regexAcordes, '').replace(/[+#°]/g, '').trim();
-                if (linhaSemAcordes.trim() !== '') {
-                    textoSemAcordes += linhaSemAcordes + '\n';
+                let linhaSemAcordes = linha.replace(regexAcordes, '').replace(/[+#°]/g, '').trim();
+                const hasAcordeExcluir = acordesExcluir.some(acorde => linha.includes(acorde));
+                if (!hasAcordeExcluir) {
+                    textoSemAcordes += linha + '\n';
                 }
             }
             text.value = textoSemAcordes.trim();
