@@ -75,7 +75,7 @@
 
         function removerAcordes() {
             const textoOriginal = text.value;
-            const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus)?\d?(\/\w+)?\b/g;
+            const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus)?\d?(\/\w+)?\b  /g;
             const linhas = textoOriginal.split(/\r?\n/g);
             let textoSemAcordes = '';
             const acordesExcluir = [
