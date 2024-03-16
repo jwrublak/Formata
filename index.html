@@ -61,8 +61,11 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    let text = document.getElementById("texto");
+        <script>
+    let text;
+    function inicializer() {
+        text = document.getElementById("texto");
+    }
 
     function turnUpperCase() {
         text.value = text.value.toUpperCase();
@@ -74,9 +77,13 @@
 
     function removerAcordes() {
         const textoOriginal = text.value;
-        // Atualizada para remover acordes seguidos por dois espaços
-        const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus)?\d?(\/\w+)?\b  /g;
-        let textoSemAcordes = textoOriginal.replace(regexAcordes, '').trim();
+        // Atualizada para lidar com dois espaços após o acorde conforme sua intenção inicial.
+        const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus|add|°|sus2|sus4|m)?\d?(\/[A-G](#|b)?)?\b  /g;
+        let textoSemAcordes = textoOriginal.replace(regexAcordes, '');
+        // Adicional: remoção de espaços extras deixados após a remoção dos acordes
+        textoSemAcordes = textoSemAcordes.replace(/\s{2,}/g, ' ');
+        textoSemAcordes = textoSemAcordes.replace(/\s+\n/g, '\n').trim(); // Remove espaços antes de novas linhas
+
         text.value = textoSemAcordes;
     }
 
@@ -86,17 +93,12 @@
         window.getSelection().removeAllRanges();
         var link = document.getElementById("link");
         link.textContent = "Texto copiado";
-        setTimeout(function() {
+        setTimeout(function () {
             link.textContent = "Clique para copiar";
         }, 3000);
     }
+</script>
 
-    // Adicionando event listeners
-    document.querySelector('.botao-uppercase').addEventListener('click', turnUpperCase);
-    document.querySelector('.botao-lowercase').addEventListener('click', turnLowerCase);
-    document.querySelector('.botao-remove-cifra').addEventListener('click', removerAcordes);
-    document.getElementById("link").addEventListener('click', copiar);
-});
 
 
     </script>
