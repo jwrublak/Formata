@@ -76,13 +76,9 @@
     }
 
     function removerAcordes() {
-        const textoOriginal = text.value;
-        // Atualizada para lidar com dois espaços após o acorde conforme sua intenção inicial.
-        const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus|add|°|sus2|sus4|m)?\d?(\/[A-G](#|b)?)?\b  /g;
+        const textoOriginal = text.value;    
+        const regexAcordes = /\b[A-G](#|b)?(maj|min|dim|aug|sus)?\d?(\/[A-G](#|b)?)?\b  /g;
         let textoSemAcordes = textoOriginal.replace(regexAcordes, '');
-        // Adicional: remoção de espaços extras deixados após a remoção dos acordes
-        textoSemAcordes = textoSemAcordes.replace(/\s{2,}/g, ' ');
-        textoSemAcordes = textoSemAcordes.replace(/\s+\n/g, '\n').trim(); // Remove espaços antes de novas linhas
 
         text.value = textoSemAcordes;
     }
